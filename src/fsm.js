@@ -3,19 +3,38 @@ class FSM {
      * Creates new FSM instance.
      * @param config
      */
-    constructor(config) {}
+    constructor(config) {
+      if(!config){
+        throw new Error('Config doesn\'t passed');
+      }
+      this.config = config;
+      this.currentState = config.initial;
+      this.allStates = config.states;
+      this.history = [];
+    }
 
     /**
      * Returns active state.
      * @returns {String}
      */
-    getState() {}
+    getState() {
+      return this.currentState;
+    }
 
     /**
      * Goes to specified state.
      * @param state
      */
-    changeState(state) {}
+    changeState(state) {
+      for(let propName in this.allStates){
+        if(propName == state){
+          //TODO: update history
+          this.currentState = state;
+          return;
+        }
+      }
+      throw new Error();
+    }
 
     /**
      * Changes state according to event transition rules.
@@ -26,7 +45,9 @@ class FSM {
     /**
      * Resets FSM state to initial.
      */
-    reset() {}
+    reset() {
+      this.currentState = this.config.initial;
+    }
 
     /**
      * Returns an array of states for which there are specified event transition rules.
